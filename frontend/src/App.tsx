@@ -1,9 +1,16 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
+import { Switch, Route } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
-  return <div>안녕하세요</div>;
+  return (
+    <>
+      <Switch>
+        <Route path="/" component={LandingPage} />
+      </Switch>
+    </>
+  );
 }
 
 export default App;
