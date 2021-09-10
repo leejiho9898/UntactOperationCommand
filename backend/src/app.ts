@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import "dotenv/config";
+import userRouter from "./routers/userRouter";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -30,4 +31,7 @@ mongoose
 const handleListening = () => {
   console.log(`서버 실행 : http://localhost:${PORT}`);
 };
+
+app.use("/api/v1/user", userRouter);
+
 app.listen(process.env.PORT, handleListening);
