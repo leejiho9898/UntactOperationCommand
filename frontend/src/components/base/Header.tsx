@@ -29,12 +29,17 @@ const Header = () => {
 };
 
 const HeaderBlock = styled.div`
-  height: 4rem;
+  height: 100%;
+  width: 5.5rem;
   display: flex;
+  float: left;
+  position: fixed;
   justify-content: space-between;
   align-items: center;
+  flex-direction: column;
   .header-tool {
     display: flex;
+    flex-direction: column;
   }
 `;
 const HeaderLogo = styled.div`
