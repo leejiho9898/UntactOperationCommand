@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import "dotenv/config";
 import userRouter from "./routers/userRouter";
 
+//익스프레스 시용
 const app = express();
 const PORT = process.env.PORT;
 app.use(
@@ -28,6 +29,7 @@ mongoose
   .then(() => console.log("DB 실행"))
   .catch((err) => console.log(err));
 
+  
 const handleListening = () => {
   console.log(`서버 실행 : http://localhost:${PORT}`);
 };
