@@ -98,15 +98,17 @@ export const addFriend = async (req: Request, res: Response) => {
     let friend = await User.findOne({ _id: friendId });
 
     const exist = me.friends.some((f) => f.toString() === friendId);
-    // const myself = me.friends.some((f) => f.toString() === res.locals.user._id);
+    const myself = me.friends.some((f) => f.toString() === res.locals.user._id);
 
-    // if (myself) {
-    //   return res.status(409).json({
-    //     success: false,
-    //     message: "자신을 친구로 추가할 수 없습니다.",
-    //   });
-    // }
+    //자기 자신을 추가 하는지 확인
+    if (myself) {
+      return res.status(409).json({
+        success: false,
+        message: "자신을 친구로 추가할 수 없습니다.",
+      });
+    }
 
+    //중복 친구추가를 하는지 확인
     if (exist) {
       return res.status(409).json({
         success: false,
@@ -114,12 +116,15 @@ export const addFriend = async (req: Request, res: Response) => {
       });
     }
 
+    //내 친구목록에 친구를 push
     me.friends.push(friendId);
     await me.save();
-    const myfriends = me.friends;
-    console.log(myfriends);
+
+    //친구의 친구목록에 나를 push
     friend.friends.push(res.locals.user._id);
     await friend.save();
+
+    const myfriends = me.friends;
 
     return res.status(200).json({
       success: true,
@@ -133,7 +138,6 @@ export const addFriend = async (req: Request, res: Response) => {
 };
 
 //친구 삭제
-
 export const deleteFriend = async (req: Request, res: Response) => {
   const { friendId } = req.params;
 
@@ -141,20 +145,39 @@ export const deleteFriend = async (req: Request, res: Response) => {
     let me = await User.findOne({ _id: res.locals.user._id });
     let friend = await User.findOne({ _id: friendId });
 
+    //삭제할 친구의 id값을 가진 배열요소의 번호를 찾고 식제
     const fIndex = me.friends.indexOf(friendId);
-    console.log(fIndex);
-    me.friends.splice(fIndex);
+    me.friends.splice(fIndex, 1);
     await me.save();
 
+    //친구한테도 동일하게 적용
     const myIndex = friend.friends.indexOf(friendId);
-    friend.friends.splice(myIndex);
+    friend.friends.splice(myIndex, 1);
     await friend.save();
 
-    const myfriends = me.friends;
+    const myFriends = me.friends;
 
     return res.status(200).json({
       success: true,
-      myfriends,
+      myFriends,
+    });
+  } catch (e) {
+    res.status(500).json({
+      error: e,
+    });
+  }
+};
+
+//친구 목록 불러오기
+export const readFriendList = async (req: Request, res: Response) => {
+  try {
+    const me = await User.findOne({ _id: res.locals.user._id });
+
+    //내 친구목록을 return
+    const myFriends = me.friends;
+    return res.status(200).json({
+      success: true,
+      myFriends,
     });
   } catch (e) {
     res.status(500).json({

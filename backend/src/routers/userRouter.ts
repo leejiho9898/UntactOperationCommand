@@ -9,4 +9,5 @@ router.post("/login", userCtrl.login);
 router.post("/logout", userCtrl.logout);
 router.post("/addFriend", userCtrl.addFriend);
 router.delete("/deleteFriend/:friendId", userCtrl.deleteFriend);
+router.get("/readFriendList",userCtrl.readFriendList)
 export default router;
