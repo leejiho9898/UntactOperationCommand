@@ -89,3 +89,18 @@ export const logout = async (req: Request, res: Response) => {
     message: "로그아웃 성공!",
   });
 };
+
+//친구 추가
+export const addFriend = async (req: Request, res: Response) => {
+  const { friendId } = req.body;
+  try {
+    console.log(res.locals.user._id);
+    return res.status(200).json({
+      success: true,
+    });
+  } catch (e) {
+    res.status(500).json({
+      error: e,
+    });
+  }
+};

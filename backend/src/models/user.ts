@@ -10,6 +10,7 @@ export interface IUser {
   password: string;
   name: string;
   token: string;
+  friend: string;
 }
 
 export interface IUserMethod extends IUser, Document {
@@ -52,6 +53,10 @@ const UserSchema: Schema<IUserMethod> = new Schema(
           throw new Error("Password can not contain a word password");
         }
       },
+    },
+    friend: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     token: {
       type: String,
