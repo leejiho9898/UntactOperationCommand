@@ -98,19 +98,19 @@ export const addFriend = async (req: Request, res: Response) => {
     let friend = await User.findOne({ _id: friendId });
 
     const exist = me.friends.some((f) => f.toString() === friendId);
-    const myself = me.friends.some((f) => f.toString() === res.locals.user._id);
-    console.log(exist);
-    console.log(myself);
+    // const myself = me.friends.some((f) => f.toString() === res.locals.user._id);
+
+    // if (myself) {
+    //   return res.status(409).json({
+    //     success: false,
+    //     message: "자신을 친구로 추가할 수 없습니다.",
+    //   });
+    // }
+
     if (exist) {
       return res.status(409).json({
         success: false,
         message: "이미 친구입니다.",
-      });
-    }
-    if (myself) {
-      return res.status(409).json({
-        success: false,
-        message: "자신을 친구로 추가할 수 없습니다.",
       });
     }
 
@@ -120,6 +120,37 @@ export const addFriend = async (req: Request, res: Response) => {
     console.log(myfriends);
     friend.friends.push(res.locals.user._id);
     await friend.save();
+
+    return res.status(200).json({
+      success: true,
+      myfriends,
+    });
+  } catch (e) {
+    res.status(500).json({
+      error: e,
+    });
+  }
+};
+
+//친구 삭제
+
+export const deleteFriend = async (req: Request, res: Response) => {
+  const { friendId } = req.params;
+
+  try {
+    let me = await User.findOne({ _id: res.locals.user._id });
+    let friend = await User.findOne({ _id: friendId });
+
+    const fIndex = me.friends.indexOf(friendId);
+    console.log(fIndex);
+    me.friends.splice(fIndex);
+    await me.save();
+
+    const myIndex = friend.friends.indexOf(friendId);
+    friend.friends.splice(myIndex);
+    await friend.save();
+
+    const myfriends = me.friends;
 
     return res.status(200).json({
       success: true,
