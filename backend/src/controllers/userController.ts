@@ -94,9 +94,35 @@ export const logout = async (req: Request, res: Response) => {
 export const addFriend = async (req: Request, res: Response) => {
   const { friendId } = req.body;
   try {
-    console.log(res.locals.user._id);
+    let me = await User.findOne({ _id: res.locals.user._id });
+    let friend = await User.findOne({ _id: friendId });
+    
+    const exist = me.friends.some((f) => f === friendId);
+    const myself = me.friends.find((f) => f === res.locals.user._id);
+
+    if (exist) {
+      return res.status(409).json({
+        success: false,
+        message: "이미 친구입니다.",
+      });
+    }
+    if (myself) {
+      return res.status(409).json({
+        success: false,
+        message: "자신을 친구로 추가할 수 없습니다.",
+      });
+    }
+    
+    me.friends.push(friendId);
+    await me.save();
+    const myfriends = me.friends;
+    console.log(myfriends)
+    friend.friends.push(res.locals.user._id)
+    await friend.save();
+
     return res.status(200).json({
       success: true,
+      myfriends
     });
   } catch (e) {
     res.status(500).json({

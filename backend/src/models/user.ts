@@ -10,7 +10,7 @@ export interface IUser {
   password: string;
   name: string;
   token: string;
-  friend: string;
+  friends: string[];
 }
 
 export interface IUserMethod extends IUser, Document {
@@ -54,10 +54,12 @@ const UserSchema: Schema<IUserMethod> = new Schema(
         }
       },
     },
-    friend: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
+    friends: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     token: {
       type: String,
     },
