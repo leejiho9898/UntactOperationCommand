@@ -98,7 +98,7 @@ export const addFriend = async (req: Request, res: Response) => {
     let friend = await User.findOne({ _id: friendId });
 
     const exist = me.friends.some((f) => f.toString() === friendId);
-    const myself = me.friends.some((f) => f.toString() === res.locals.user._id);
+    const myself = res.locals.user._id === friendId;
 
     //자기 자신을 추가 하는지 확인
     if (myself) {
@@ -116,11 +116,11 @@ export const addFriend = async (req: Request, res: Response) => {
       });
     }
 
-    //내 친구목록에 친구를 push
+    //내 친구목록에 친구를 추가
     me.friends.push(friendId);
     await me.save();
 
-    //친구의 친구목록에 나를 push
+    //친구의 친구목록에 나를 추가
     friend.friends.push(res.locals.user._id);
     await friend.save();
 
