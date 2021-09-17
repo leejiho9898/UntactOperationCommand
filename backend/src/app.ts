@@ -19,9 +19,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-//미들웨어 
+//미들웨어
 app.use(userAuth);
-
 
 //DB실행
 mongoose
@@ -34,12 +33,11 @@ mongoose
   .then(() => console.log("DB 실행"))
   .catch((err) => console.log(err));
 
-  
 const handleListening = () => {
   console.log(`서버 실행 : http://localhost:${PORT}`);
 };
 
 app.use("/api/v1/user", userRouter);
-
+app.use("/uploads", express.static("uploads"));
 
 app.listen(process.env.PORT, handleListening);

@@ -1,5 +1,33 @@
 import { Request, Response } from "express";
+import multer from "multer";
 import User from "../models/user";
+
+// multer
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null,"uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}_${file.originalname}`);
+  },
+});
+var upload = multer({ storage: storage }).single("user_img");
+
+export const uploadImg = (req: Request, res: Response) => {
+
+  upload(req, res, (err) => {
+    console.log("req.body")
+    if (err) {
+      return res.json({ success: false, err });
+    }
+    console.log("asd2")
+    return res.json({
+      success: true,
+      image: res.req.file.path,
+      fileName: res.req.file.filename,
+    });
+  });
+};
 
 //회원가입
 export const register = async (req: Request, res: Response) => {

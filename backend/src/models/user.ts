@@ -9,8 +9,9 @@ export interface IUser {
   email: string;
   password: string;
   name: string;
-  token: string;
+  thumbnail: string;
   friends: string[];
+  token: string;
 }
 
 export interface IUserMethod extends IUser, Document {
@@ -53,6 +54,10 @@ const UserSchema: Schema<IUserMethod> = new Schema(
           throw new Error("Password can not contain a word password");
         }
       },
+    },
+    thumbnail: {
+      type: String,
+      trim: true,
     },
     friends: [
       {
