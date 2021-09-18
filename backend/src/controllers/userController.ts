@@ -5,7 +5,7 @@ import User from "../models/user";
 // multer
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null,"uploads/");
+    cb(null, "uploads/thumbnail/");
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}_${file.originalname}`);
@@ -14,13 +14,12 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).single("user_img");
 
 export const uploadImg = (req: Request, res: Response) => {
-
   upload(req, res, (err) => {
-    console.log("req.body")
+    console.log("req.body");
     if (err) {
       return res.json({ success: false, err });
     }
-    console.log("asd2")
+    console.log("asd2");
     return res.json({
       success: true,
       image: res.req.file.path,
@@ -173,14 +172,12 @@ export const deleteFriend = async (req: Request, res: Response) => {
     let me = await User.findOne({ _id: res.locals.user._id });
     let friend = await User.findOne({ _id: friendId });
 
-    //삭제할 친구의 id값을 가진 배열요소의 번호를 찾고 식제
-    const fIndex = me.friends.indexOf(friendId);
-    me.friends.splice(fIndex, 1);
+    //삭제할 친구의 id를 배열에서 삭제
+    me.friends.filter((f) => f !== friendId);
     await me.save();
 
     //친구한테도 동일하게 적용
-    const myIndex = friend.friends.indexOf(friendId);
-    friend.friends.splice(myIndex, 1);
+    friend.friends.filter((f) => f !== res.locals.user._id);
     await friend.save();
 
     const myFriends = me.friends;
