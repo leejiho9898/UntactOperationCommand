@@ -6,6 +6,7 @@ import "dotenv/config";
 import userRouter from "./routers/userRouter";
 import userAuth from "./lib/userAuth";
 import { Server } from "socket.io";
+import { fs } from 'fs';
 
 //익스프레스 시용
 const app = express();
@@ -50,7 +51,9 @@ const io = new Server(server, {
 });
 
 server.listen(PORT, () => {
-  console.log(`서버 실행 : http://localhost:${PORT}`);
+  let dir = "./uploads";
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+  console.log(`connect ✅ http://localhost:${PORT}`);
 });
 
 app.get("/", function (req, res, next) {
