@@ -5,9 +5,11 @@ import "./style.css";
 const ENDPOINT = "http://localhost:8080";
 const socket = socketIOClient(ENDPOINT);
 const chat = () => {
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  };
+//   const onchange = (e: React.FormEvent<HTMLFormElement>) => {};
+//   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+//     e.preventDefault();
+//     socket.emit("chat message", value);
+//   };
   return (
     <div>
       <ul id="messages"></ul>
