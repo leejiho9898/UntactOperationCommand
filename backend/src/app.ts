@@ -51,8 +51,10 @@ const io = new Server(server, {
 });
 
 server.listen(PORT, () => {
-  let dir = "./uploads/profile";
+  let dir = "./uploads";
   if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+  let dirProfile = "./uploads/porfile";
+  if (!fs.existsSync(dirProfile)) fs.mkdirSync(dirProfile);
   console.log(`서버 실행 : http://localhost:${PORT}`);
 });
 
