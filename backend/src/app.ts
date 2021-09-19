@@ -62,6 +62,7 @@ app.get("/", function (req, res, next) {
   res.json("hi");
 });
 
+
 io.on("connection", (socket) => {
   socket.on("newUser", (data) => {
     //입장시

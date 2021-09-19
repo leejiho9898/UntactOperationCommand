@@ -79,7 +79,7 @@ export const login = async (req: Request, res: Response) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      res.status(401).json({
+      return res.status(401).json({
         success: false,
         message: "계정이 존재하지 않습니다 !",
       });
