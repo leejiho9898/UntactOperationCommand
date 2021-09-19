@@ -5,7 +5,7 @@ import User from "../models/user";
 // multer
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/thumbnail/");
+    cb(null, "uploads/profile/");
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}_${file.originalname}`);
